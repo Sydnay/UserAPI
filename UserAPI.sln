@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users", "Users\Users.csproj", "{B6B157AF-B234-4DD4-BA9F-9274D4C08181}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDB", "MongoDB\MongoDB.csproj", "{CF95166C-E388-468B-8C7F-096D56259B3A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserAPI", "UserAPI\UserAPI.csproj", "{3EB10289-07B7-4DE8-B234-422D958C8E46}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6B157AF-B234-4DD4-BA9F-9274D4C08181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B157AF-B234-4DD4-BA9F-9274D4C08181}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B157AF-B234-4DD4-BA9F-9274D4C08181}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B157AF-B234-4DD4-BA9F-9274D4C08181}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF95166C-E388-468B-8C7F-096D56259B3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF95166C-E388-468B-8C7F-096D56259B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF95166C-E388-468B-8C7F-096D56259B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF95166C-E388-468B-8C7F-096D56259B3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EB10289-07B7-4DE8-B234-422D958C8E46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EB10289-07B7-4DE8-B234-422D958C8E46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EB10289-07B7-4DE8-B234-422D958C8E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EB10289-07B7-4DE8-B234-422D958C8E46}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {647118C2-212F-46F7-BCEF-1C3420746D5B}
+	EndGlobalSection
+EndGlobal
