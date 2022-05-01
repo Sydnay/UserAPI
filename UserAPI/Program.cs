@@ -13,7 +13,7 @@ builder.Services.AddSingleton<IMongoClient>(options =>
     return new MongoClient(settings.ConnectionString);
 });
 //TURN ON MONGODB
-builder.Services.AddSingleton<IUserRepository, UserMongoDbRepository>();
+//builder.Services.AddSingleton<IUserRepository, UserMongoDbRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
