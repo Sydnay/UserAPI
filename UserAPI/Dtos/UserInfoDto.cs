@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-
+﻿
 namespace UserAPI.Dtos
 {
     public class UserInfoDto

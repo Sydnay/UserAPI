@@ -7,7 +7,8 @@ namespace UserAPI
     {
         static public UserDto ToDto(this User user)
         {
-            return new UserDto() { 
+            return new UserDto()
+            {
                 Guid = user.Guid,
                 Name = user.Name,
                 Login = user.Login,

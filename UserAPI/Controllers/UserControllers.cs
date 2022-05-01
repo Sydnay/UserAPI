@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 using UserAPI;
 using UserAPI.Dtos;
+using UserAPI.Repository;
 using Users;
 //Валидацию на пустоту возможно стоит вынести в отдельный метод, но я не уверен нужно ли
 namespace UserControllers
@@ -12,7 +13,6 @@ namespace UserControllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepository repository;
-        //private readonly MongoRepository database;
         public UserController(IUserRepository repository)
         {
             this.repository = repository;

@@ -4,20 +4,6 @@ public class UserMemoryRepository : IUserRepository
 {
     private readonly List<User> users = new()
     {
-        //new User()
-        //{
-        //    Name = "Егор",
-        //    Login = "Егорчан",
-        //    Password = "Попович",
-        //    Gender = 1,
-        //    Birthday = new DateTime(1990, 12, 30),
-        //    Admin = false,
-        //    Guid = Guid.NewGuid(),
-        //    CreatedBy = "Putin",
-        //    CreatedOn = DateTime.Now,
-        //    ModifiedOn = DateTime.Now,
-        //    ModifiedBy = "Putin"
-        //},
         new User()
         {
             Name = "Admin",
@@ -31,21 +17,7 @@ public class UserMemoryRepository : IUserRepository
             CreatedOn = DateTime.Now,
             ModifiedOn = DateTime.Now,
             ModifiedBy = "Server"
-        },
-        //new User()
-        //{
-        //    Name = "aboba",
-        //    Login = "Abobich",
-        //    Password = "NoBitches",
-        //    Gender = 1,
-        //    Birthday = new DateTime(1991, 2, 3),
-        //    Admin = false,
-        //    Guid = Guid.NewGuid(),
-        //    CreatedBy = "Bidon",
-        //    CreatedOn = DateTime.Now,
-        //    ModifiedOn = DateTime.Now,
-        //    ModifiedBy = "Bidon"
-        //}
+        }
     };
 
     public IEnumerable<User> GetUsers()
@@ -54,7 +26,7 @@ public class UserMemoryRepository : IUserRepository
     }
     public User GetActiveUser(string login)
     {
-        return users.Where(user => user.Login == login&&user.RevokedBy==null)
+        return users.Where(user => user.Login == login && user.RevokedBy == null)
                     .FirstOrDefault();
     }
     public User GetUser(string login)
@@ -78,7 +50,7 @@ public class UserMemoryRepository : IUserRepository
 
     public User GetAdmin(string login, string password)
     {
-        return users.Where(user => user.Login == login&&user.Password == password&&user.Admin)
+        return users.Where(user => user.Login == login && user.Password == password && user.Admin)
                     .FirstOrDefault();
     }
 
