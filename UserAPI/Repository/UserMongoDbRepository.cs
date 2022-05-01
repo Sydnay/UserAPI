@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using Users;
 
 namespace UserAPI.Repository
@@ -48,8 +49,9 @@ namespace UserAPI.Repository
 
         public async Task<User> GetAdminAsync(string login, string password)
         {
-            return await userCollection.Find(user => user.Login == login && user.Password == password && user.Admin)
-                    .FirstOrDefaultAsync();
+            return await userCollection.Find(user => user.Login == login && user.Password == password 
+                                                    && user.Admin
+                                                    && user.RevokedBy == null).FirstOrDefaultAsync();
         }
 
         public async Task<User> GetUserAsync(string login)
@@ -60,7 +62,7 @@ namespace UserAPI.Repository
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return await userCollection.Find(user => user.RevokedBy == null).ToListAsync();
+            return await userCollection.Find(new BsonDocument()).ToListAsync();
         }
 
         public async Task UpdateUserAsync(User user)

@@ -24,8 +24,7 @@ namespace UserAPI.Repository
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            var list = users.Where(user => user.RevokedBy == null);
-            return await Task.FromResult(list);
+            return await Task.FromResult(users);
         }
         public async Task<User> GetActiveUserAsync(string login)
         {
@@ -62,8 +61,9 @@ namespace UserAPI.Repository
 
         public async Task<User> GetAdminAsync(string login, string password)
         {
-            var admin = users.Where(user => user.Login == login && user.Password == password && user.Admin)
-                        .FirstOrDefault();
+            var admin = users.Where(user => user.Login == login && user.Password == password 
+                                        && user.Admin
+                                        && user.RevokedBy is null).FirstOrDefault();
             return await Task.FromResult(admin);
         }
 

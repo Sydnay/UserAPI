@@ -19,8 +19,8 @@ namespace UserControllers
         }
 
         /// <summary>
-        /// 1) Создание пользователя по логину, паролю, имени, полу и дате рождения + указание будет ли 
-        /// пользователь админом (Доступно Админам)
+        /// 1) Creating a user by login, password, name, gender and date of birth + specifying whether the user will be an admin 
+        /// (Available to Admins)
         /// </summary>
         /// <param name="userDto"></param>
         /// <param name="login"></param>
@@ -56,8 +56,8 @@ namespace UserControllers
             return Ok(user.ToDto());
         }
         /// <summary>
-        /// 2) Изменение имени, пола или даты рождения пользователя
-        /// (Может менять Администратор, либо лично пользователь, если он активен(отсутствует RevokedOn))
+        /// 2) Changing the user's name, gender, or date of birth 
+        /// (Can be changed by the Administrator, or by the user personally, if he is active (no RevokedOn))
         /// </summary>
         /// <param name="userLogin"></param>
         /// <param name="userDto"></param>
@@ -99,8 +99,8 @@ namespace UserControllers
             return Ok(updatedUser.ToDto());
         }
         /// <summary>
-        /// 3) Изменение пароля 
-        /// (Пароль может менять либо Администратор, либо лично пользователь, еслион активен(отсутствует RevokedOn))
+        /// 3) Password change 
+        /// (The password can be changed either by the Administrator or by the user personally, if it is active (no RevokedOn))
         /// </summary>
         /// <param name="userLogin"></param>
         /// <param name="userDto"></param>
@@ -140,8 +140,8 @@ namespace UserControllers
             return Ok(updatedUser.ToDto());
         }
         /// <summary>
-        /// 4) Изменение логина
-        /// (Логин может менять либо Администратор, либо лично пользователь, если он активен (отсутствует RevokedOn), логин должен оставаться уникальным)
+        /// 4) Login change
+        /// (The login can be changed either by the Administrator or by the user personally, if it is active (no RevokedOn), the login must remain unique)
         /// </summary>
         /// <param name="login"></param>
         /// <param name="userDto"></param>
@@ -184,8 +184,8 @@ namespace UserControllers
             return Ok(updatedUser.ToDto());
         }
         /// <summary>
-        /// 5) Запрос списка всех активных (отсутствует RevokedOn) пользователей, список отсортирован по CreatedOn
-        /// (Доступно Админам)
+        /// 5) Request a list of all active (no RevokedOn) users, the list is sorted by CreatedOn
+        /// (Available to Admins)
         /// </summary>
         /// <param name="login"></param>
         /// <param name="password"></param>
@@ -205,8 +205,8 @@ namespace UserControllers
             return Ok(users);
         }
         /// <summary>
-        /// 6) Запрос пользователя по логину, в списке долны быть имя, пол и дата рождения статус активный или нет
-        /// (Доступно Админам)
+        /// 6) Request user by login, the list should contain name, gender and date of birth status active or not
+        /// (Available to Admins)
         /// </summary>
         /// <param name="login"></param>
         /// <param name="password"></param>
@@ -228,8 +228,8 @@ namespace UserControllers
             return Ok(user.ToInfoDto());
         }
         /// <summary>
-        /// 7) Запрос пользователя по логину и паролю 
-        /// (Доступно только самому пользователю, если он активен(отсутствует RevokedOn))
+        /// 7) User request by login and password
+        /// (Available only to the user himself if he is active(no RevokedOn))
         /// </summary>
         /// <param name="login"></param>
         /// <param name="password"></param>
@@ -248,8 +248,8 @@ namespace UserControllers
             return Ok(user.ToDto());
         }
         /// <summary>
-        /// 8) Запрос всех пользователей старше определённого возраста 
-        /// (Доступно Админам)
+        /// 8) Request all users over a certain age
+        /// (Available to Admins)
         /// </summary>
         /// <param name="login"></param>
         /// <param name="password"></param>
@@ -266,14 +266,13 @@ namespace UserControllers
             var birthday = new DateTime(year: (DateTime.Today.Year - age), month: DateTime.Today.Month, day: DateTime.Today.Day);
 
             var users = (await repository.GetUsersAsync())
-                            .Where(activeUser => activeUser.RevokedBy == null)
                             .Where(userOlder => userOlder.Birthday < birthday)
                             .Select(user => user.ToDto());
             return Ok(users);
         }
         /// <summary>
-        /// 9) Удаление пользователя по логину полное или мягкое (При мягком удалении должна происходить простановка RevokedOn и RevokedBy) 
-        /// (Доступно Админам)
+        /// 9) Deleting a user by login is complete or soft (With soft deletion, RevokedOn and RevokedBy should be installed)
+        /// (Available to Admins)
         /// </summary>
         /// <param name="userLogin"></param>
         /// <param name="isRevokable"></param>
@@ -308,8 +307,8 @@ namespace UserControllers
             return NoContent();
         }
         /// <summary>
-        /// 10) Восстановление пользователя - Очистка полей (RevokedOn, RevokedBy) 
-        /// (Доступно Админам)
+        /// 10) User Recovery - Clearing fields (RevokedOn, RevokedBy)
+        /// (Available to Admins)
         /// </summary>
         /// <param name="login"></param>
         /// <param name="password"></param>
