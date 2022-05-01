@@ -27,14 +27,14 @@ namespace UserControllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<UserDto> CreateUser(string login, string password, CreateUserDto userDto)
+        public async Task<ActionResult<UserDto>> CreateUser(string login, string password, CreateUserDto userDto)
         {
-            User admin = repository.GetAdmin(login, password);
+            User admin = await repository.GetAdminAsync(login, password);
 
             if (admin == null)
                 return NotFound("Admin is not found");
 
-            if (repository.GetActiveUser(userDto.Login) != null)
+            if (await repository.GetActiveUserAsync(userDto.Login) != null)
                 return BadRequest("User already exist");
             var user = new User()
             {
@@ -51,7 +51,7 @@ namespace UserControllers
                 ModifiedBy = admin.Login
             };
 
-            repository.CreateUser(user);
+            await repository.CreateUserAsync(user);
 
             return Ok(user.ToDto());
         }
@@ -63,23 +63,23 @@ namespace UserControllers
         /// <param name="userDto"></param>
         /// <returns></returns>
         [HttpPut("changeinfo/{login}")]
-        public ActionResult UpdateUserInfo(string login, string password, UpdateUserInfoDto userDto, string userLogin)
+        public async Task<ActionResult> UpdateUserInfo(string login, string password, UpdateUserInfoDto userDto, string userLogin)
         {
             User user;
 
             if (userLogin == login)
             {
-                user = repository.GetActiveUser(userLogin);
+                user = await repository.GetActiveUserAsync(userLogin);
                 if (user != null && user.Password != password)
                     return BadRequest("Wrong password");
             }
             else
             {
-                User admin = repository.GetAdmin(login, password);
+                User admin = await repository.GetAdminAsync(login, password);
                 if (admin == null)
                     return NotFound("Executor not found");
 
-                user = repository.GetUser(userLogin);
+                user = await repository.GetUserAsync(userLogin);
             }
 
             if (user == null)
@@ -94,7 +94,7 @@ namespace UserControllers
                 ModifiedOn = DateTime.Now
             };
 
-            repository.UpdateUser(updatedUser);
+            await repository.UpdateUserAsync(updatedUser);
 
             return Ok(updatedUser.ToDto());
         }
@@ -106,23 +106,23 @@ namespace UserControllers
         /// <param name="userDto"></param>
         /// <returns></returns>
         [HttpPut("changepassword/{login}")]
-        public ActionResult UpdateUserPassword(string login, string password, UpdateUserPasswordDto userDto, string userLogin)
+        public async Task<ActionResult> UpdateUserPassword(string login, string password, UpdateUserPasswordDto userDto, string userLogin)
         {
             User user;
 
             if (userLogin == login)
             {
-                user = repository.GetActiveUser(userLogin);
+                user = await repository.GetActiveUserAsync(userLogin);
                 if (user != null && user.Password != password)
                     return BadRequest("Wrong password");
             }
             else
             {
-                User admin = repository.GetAdmin(login, password);
+                User admin = await repository.GetAdminAsync(login, password);
                 if (admin == null)
                     return NotFound("Executor not found");
 
-                user = repository.GetUser(userLogin);
+                user = await repository.GetUserAsync(userLogin);
             }
 
             if (user == null)
@@ -131,11 +131,11 @@ namespace UserControllers
             var updatedUser = user with
             {
                 Password = userDto.Password,
-                ModifiedBy = userLogin,
+                ModifiedBy = login,
                 ModifiedOn = DateTime.Now
             };
 
-            repository.UpdateUser(updatedUser);
+            await repository.UpdateUserAsync(updatedUser);
 
             return Ok(updatedUser.ToDto());
         }
@@ -147,23 +147,23 @@ namespace UserControllers
         /// <param name="userDto"></param>
         /// <returns></returns>
         [HttpPut("changelogin/{login}")]
-        public ActionResult UpdateUserLogin(string login, string password, UpdateUserLoginDto userDto, string userLogin)
+        public async Task<ActionResult> UpdateUserLogin(string login, string password, UpdateUserLoginDto userDto, string userLogin)
         {
             User user;
 
             if (userLogin == login)
             {
-                user = repository.GetActiveUser(userLogin);
+                user = await repository.GetActiveUserAsync(userLogin);
                 if (user != null && user.Password != password)
                     return BadRequest("Wrong password");
             }
             else
             {
-                User admin = repository.GetAdmin(login, password);
+                User admin = await repository.GetAdminAsync(login, password);
                 if (admin == null)
                     return NotFound("Executor not found");
 
-                user = repository.GetUser(userLogin);
+                user = await repository.GetUserAsync(userLogin);
             }
 
             if (user == null)
@@ -176,10 +176,10 @@ namespace UserControllers
                 ModifiedOn = DateTime.Now
             };
 
-            if (repository.GetActiveUser(userDto.Login) != null)
+            if (await repository.GetActiveUserAsync(userDto.Login) != null)
                 return BadRequest("User with this login is already exist");
 
-            repository.UpdateUser(updatedUser);
+            await repository.UpdateUserAsync(updatedUser);
 
             return Ok(updatedUser.ToDto());
         }
@@ -191,14 +191,14 @@ namespace UserControllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<IEnumerable<UserDto>> GetUsers(string login, string password)
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers(string login, string password)
         {
-            User admin = repository.GetAdmin(login, password);
+            User admin = await repository.GetAdminAsync(login, password);
 
             if (admin == null)
                 return NotFound("Admin is not found");
 
-            var users = repository.GetUsers()
+            var users = (await repository.GetUsersAsync())
                             .Where(activeUser => activeUser.RevokedBy == null)
                             .OrderByDescending(created => created.CreatedOn)
                             .Select(user => user.ToDto());
@@ -213,14 +213,14 @@ namespace UserControllers
         /// <param name="userLogin"></param>
         /// <returns></returns>
         [HttpGet("userinfo/{login}")]
-        public ActionResult<UserInfoDto> GetUser(string login, string password, string userLogin)
+        public async Task<ActionResult<UserInfoDto>> GetUser(string login, string password, string userLogin)
         {
-            User admin = repository.GetAdmin(login, password);
+            User admin = await repository.GetAdminAsync(login, password);
 
             if (admin == null)
                 return NotFound("Admin is not found");
 
-            var user = repository.GetUser(userLogin);
+            var user = await repository.GetUserAsync(userLogin);
 
             if (user == null)
                 return NotFound();
@@ -235,9 +235,9 @@ namespace UserControllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpGet("aboutme/{login}")]
-        public ActionResult<UserDto> GetUserHimself(string login, string password)
+        public async Task<ActionResult<UserDto>> GetUserHimself(string login, string password)
         {
-            var user = repository.GetActiveUser(login);
+            var user = await repository.GetActiveUserAsync(login);
 
             if (user == null)
                 return NotFound("User not found");
@@ -256,16 +256,16 @@ namespace UserControllers
         /// <param name="age"></param>
         /// <returns></returns>
         [HttpGet("olderthan")]
-        public ActionResult<IEnumerable<UserDto>> GetUsersOlderThan(string login, string password, [BindRequired, Range(1, 130)] int age)
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersOlderThan(string login, string password, [BindRequired, Range(1, 130)] int age)
         {
-            User admin = repository.GetAdmin(login, password);
+            User admin = await repository.GetAdminAsync(login, password);
 
             if (admin == null)
                 return NotFound("Admin is not found");
 
             var birthday = new DateTime(year: (DateTime.Today.Year - age), month: DateTime.Today.Month, day: DateTime.Today.Day);
 
-            var users = repository.GetUsers()
+            var users = (await repository.GetUsersAsync())
                             .Where(activeUser => activeUser.RevokedBy == null)
                             .Where(userOlder => userOlder.Birthday < birthday)
                             .Select(user => user.ToDto());
@@ -279,14 +279,14 @@ namespace UserControllers
         /// <param name="isRevokable"></param>
         /// <returns></returns>
         [HttpDelete("{login}")]
-        public ActionResult DeleteUser(string login, string password, string userLogin, [BindRequired] bool isRevokable)
+        public async Task<ActionResult> DeleteUser(string login, string password, string userLogin, [BindRequired] bool isRevokable)
         {
-            User admin = repository.GetAdmin(login, password);
+            User admin = await repository.GetAdminAsync(login, password);
 
             if (admin == null)
                 return NotFound("Admin is not found");
 
-            User user = repository.GetUser(userLogin);
+            User user = await repository.GetUserAsync(userLogin);
 
             if (user == null)
                 return NotFound();
@@ -299,11 +299,11 @@ namespace UserControllers
                     RevokedBy = login
                 };
 
-                repository.UpdateUser(updatedUser);
+                await repository.UpdateUserAsync(updatedUser);
 
                 return Ok(updatedUser.ToDto());
             }
-            repository.DeleteUser(userLogin);
+            await repository.DeleteUserAsync(userLogin);
 
             return NoContent();
         }
@@ -316,14 +316,14 @@ namespace UserControllers
         /// <param name="userLogin"></param>
         /// <returns></returns>
         [HttpPut("revokeuser/{login}")]
-        public ActionResult RevokeUser(string login, string password, string userLogin)
+        public async Task<ActionResult> RevokeUser(string login, string password, string userLogin)
         {
-            User admin = repository.GetAdmin(login, password);
+            User admin = await repository.GetAdminAsync(login, password);
 
             if (admin == null)
                 return NotFound("Admin is not found");
 
-            User user = repository.GetUser(userLogin);
+            User user = await repository.GetUserAsync(userLogin);
 
             if (user == null)
                 return NotFound();
@@ -332,11 +332,11 @@ namespace UserControllers
 
             var updatedUser = user with
             {
-                RevokedOn = default(DateTime),
+                RevokedOn = default,
                 RevokedBy = null
             };
 
-            repository.UpdateUser(updatedUser);
+            await repository.UpdateUserAsync(updatedUser);
 
             return Ok(updatedUser.ToDto());
         }

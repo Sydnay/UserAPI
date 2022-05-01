@@ -29,44 +29,44 @@ namespace UserAPI.Repository
             });
         }
 
-        public void CreateUser(User user)
+        public async Task CreateUserAsync(User user)
         {
-            userCollection.InsertOne(user);
+            await userCollection.InsertOneAsync(user);
         }
 
-        public void DeleteUser(string login)
+        public async Task DeleteUserAsync(string login)
         {
             var filter = Builders<User>.Filter.Eq(user => user.Login, login);
-            userCollection.DeleteOne(filter);
+            await userCollection.DeleteOneAsync(filter);
         }
 
-        public User GetActiveUser(string login)
+        public async Task<User> GetActiveUserAsync(string login)
         {
-            return userCollection.Find(user => user.Login == login && user.RevokedBy == null)
-                    .FirstOrDefault();
+            return await userCollection.Find(user => user.Login == login && user.RevokedBy == null)
+                    .FirstOrDefaultAsync();
         }
 
-        public User GetAdmin(string login, string password)
+        public async Task<User> GetAdminAsync(string login, string password)
         {
-            return userCollection.Find(user => user.Login == login && user.Password == password && user.Admin)
-                    .FirstOrDefault();
+            return await userCollection.Find(user => user.Login == login && user.Password == password && user.Admin)
+                    .FirstOrDefaultAsync();
         }
 
-        public User GetUser(string login)
+        public async Task<User> GetUserAsync(string login)
         {
-            return userCollection.Find(user => user.Login == login)
-                    .FirstOrDefault();
+            return await userCollection.Find(user => user.Login == login)
+                    .FirstOrDefaultAsync();
         }
 
-        public IEnumerable<User> GetUsers()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return userCollection.Find(user => user.RevokedBy == null).ToList();
+            return await userCollection.Find(user => user.RevokedBy == null).ToListAsync();
         }
 
-        public void UpdateUser(User user)
+        public async Task UpdateUserAsync(User user)
         {
             var filter = Builders<User>.Filter.Eq(replacedUser => replacedUser.Guid, user.Guid);
-            userCollection.ReplaceOne(filter,user);
+            await userCollection.ReplaceOneAsync(filter,user);
         }
     }
 }

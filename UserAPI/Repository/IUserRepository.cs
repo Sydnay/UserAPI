@@ -1,12 +1,15 @@
 ﻿using Users;
 
-public interface IUserRepository
+namespace UserAPI.Repository
 {
-    User GetActiveUser(string login);
-    User GetUser(string login);
-    User GetAdmin(string login, string password);
-    IEnumerable<User> GetUsers();
-    void CreateUser(User user);
-    void UpdateUser(User user);
-    void DeleteUser(string login);
+    public interface IUserRepository
+    {
+        Task<User> GetActiveUserAsync(string login);
+        Task<User> GetUserAsync(string login);
+        Task<User> GetAdminAsync(string login, string password);
+        Task<IEnumerable<User>> GetUsersAsync();
+        Task CreateUserAsync(User user);
+        Task UpdateUserAsync(User user);
+        Task DeleteUserAsync(string login);
+    }
 }
