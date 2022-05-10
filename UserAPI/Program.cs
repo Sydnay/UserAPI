@@ -1,19 +1,19 @@
-using MongoDB.Driver;
+using Microsoft.EntityFrameworkCore;
 using UserAPI.Repository;
-using UserAPI.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSingleton<IUserRepository, UserMemoryRepository>();
 
-builder.Services.AddSingleton<IMongoClient>(options => 
+//RAM
+//builder.Services.AddSingleton<IUserRepository, UserMemoryRepository>();
+
+builder.Services.AddDbContext<UserEFRepository>(options =>
 {
-    var settings = builder.Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-    return new MongoClient(settings.ConnectionString);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionToDatabase"));
 });
-//TURN ON MONGODB
-//builder.Services.AddSingleton<IUserRepository, UserMongoDbRepository>();
+
+builder.Services.AddTransient<IUserRepository, UserEFRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

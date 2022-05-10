@@ -1,11 +1,11 @@
 ﻿
-using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace Users
 {
     public record User
     {
-        [BsonId]
+        [Key]
         public Guid Guid { get; init; } //Уникальный идентификатор пользователя
         public string Login { get; set; } //Уникальный Логин (запрещены все символы кроме латинских букв и цифр)
         public string Password { get; set; } //Пароль (запрещены все символы кроме латинских букв и цифр)
@@ -18,7 +18,7 @@ namespace Users
         public DateTime ModifiedOn { get; set; } //Дата изменения пользователя
         public string ModifiedBy { get; set; } //Логин Пользователя, от имени которого этот пользователь изменён
         public DateTime RevokedOn { get; set; } //Дата удаления пользователя
-        public string RevokedBy { get; set; } //Логин Пользователя, от имени которого этот пользователь удалён
-
+        public string? RevokedBy { get; set; } //Логин Пользователя, от имени которого этот пользователь удалён
+        //К сожалению не получилось связать бд с приложением, не сделав это поле Nullable
     }
 }

@@ -5,7 +5,7 @@ namespace UserAPI.Dtos
 {
     public class UserDto
     {
-        [BsonId]
+        [Key]
         public Guid Guid { get; init; } //Уникальный идентификатор пользователя
         public string Login { get; init; } //Уникальный Логин (запрещены все символы кроме латинских букв и цифр)
         public string Password { get; init; } //Пароль (запрещены все символы кроме латинских букв и цифр)
@@ -19,7 +19,7 @@ namespace UserAPI.Dtos
         public DateTime ModifiedOn { get; init; } //Дата изменения пользователя
         public string ModifiedBy { get; init; } //Логин Пользователя, от имени которого этот пользователь изменён
         public DateTime RevokedOn { get; init; } //Дата удаления пользователя
-        public string RevokedBy { get; init; } //Логин Пользователя, от имени которого этот пользователь удалён
+        public string? RevokedBy { get; init; } //Логин Пользователя, от имени которого этот пользователь удалён
 
     }
 }

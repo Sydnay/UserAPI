@@ -13,6 +13,7 @@ namespace UserControllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepository repository;
+        
         public UserController(IUserRepository repository)
         {
             this.repository = repository;
@@ -334,7 +335,7 @@ namespace UserControllers
                 RevokedOn = default,
                 RevokedBy = null
             };
-
+            
             await repository.UpdateUserAsync(updatedUser);
 
             return Ok(updatedUser.ToDto());
